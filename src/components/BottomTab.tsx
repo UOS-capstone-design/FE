@@ -5,7 +5,7 @@ import MonitoringPage from '../screens/MonitoringPage';
 import ReportPage from '../screens/ReportPage';
 import ProfilePage from '../screens/ProfilePage';
 import Ionic from 'react-native-vector-icons/Ionicons';
-import {Platform, StyleSheet} from 'react-native';
+import {Dimensions, Platform, StyleSheet} from 'react-native';
 
 const getTabBarIcon = (
   route: string,
@@ -27,6 +27,8 @@ const getTabBarIcon = (
 
   return <Ionic name={iconName} size={size} color={color} />;
 };
+
+const {height} = Dimensions.get('window');
 
 export default function BottomTab(): ReactNode {
   const Tab = createBottomTabNavigator();
@@ -63,13 +65,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   tabBarAndroid: {
-    height: 60,
+    height: height * 0.08,
     paddingBottom: 15,
-    paddingTop: 5,
+    paddingTop: 15,
     elevation: 8,
   },
   tabBarIOS: {
-    height: 70,
+    height: height * 0.1,
     paddingBottom: 20,
     paddingTop: 5,
   },

@@ -2,10 +2,11 @@ export interface Alarm {
   id: string;
   title?: string;
   timer: Date;
-  repeat?: RepeatState;
-  mission?: {
-    strict: boolean;
-    type: MissionType;
+  active: boolean;
+  repeat: RepeatState;
+  mission: {
+    mode: MissionMode;
+    id: MissionCareType;
   };
   setting: {
     isVibration: boolean;
@@ -14,9 +15,17 @@ export interface Alarm {
   };
 }
 
+export type MissionMode = 'Strict' | 'Free';
+
+export type SelectList = 'Alarm' | 'Mission';
+
 export type SettingTimeInterval = '반복 없음' | 5 | 10 | 15 | 30;
 
-export type MissionType = 'Medical';
+export type MissionCareType =
+  | 'Manage blood sugar'
+  | 'Eat Medician'
+  | 'Eat food'
+  | undefined;
 
 export type DayKey =
   | 'once'
@@ -30,4 +39,15 @@ export type DayKey =
 
 export type RepeatState = {
   [key in DayKey]: boolean;
+};
+export type ReportCustomDuration = {
+  startDay: Date;
+  endDay: Date;
+};
+
+export type ReportDuration = 'Today' | 'Week' | 'Month' | ReportCustomDuration;
+
+export type Report = {
+  mission: MissionCareType;
+  duration: ReportDuration;
 };

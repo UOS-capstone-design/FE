@@ -1,5 +1,5 @@
 import React, {createContext, ReactNode, useEffect, useState} from 'react';
-import {Alarm} from '../../types';
+import {Alarm, MissionCareType, MissionMode, RepeatState} from '../../types';
 import uuid from 'react-native-uuid';
 
 type Props = {
@@ -10,11 +10,33 @@ type Props = {
 interface AlarmContextType {
   current: Alarm;
   updateAlarm: (updates: Partial<Alarm>) => void;
+  updateMission: (
+    newSetting: Partial<{
+      mode: MissionMode;
+      id: MissionCareType;
+    }>,
+  ) => void;
 }
 
 export const AlarmContextManage = createContext<AlarmContextType | undefined>(
   undefined,
 );
+
+const defaultRepeat: RepeatState = {
+  once: true,
+  mon: false,
+  thu: false,
+  wed: false,
+  tue: false,
+  fri: false,
+  sat: false,
+  sun: false,
+};
+
+const defaultMission = {
+  mode: 'Free' as MissionMode,
+  id: undefined,
+};
 
 const AlarmContext = ({children, initial}: Props) => {
   const [current, setCurrentAlarm] = useState<Alarm>(
@@ -23,7 +45,10 @@ const AlarmContext = ({children, initial}: Props) => {
       : {
           id: uuid.v4().toString(),
           timer: new Date(),
-          setting: {isVibration: false, volume: 50, interval: 5},
+          active: false,
+          repeat: defaultRepeat,
+          mission: defaultMission,
+          setting: {isVibration: false, volume: 50, interval: '반복 없음'},
         },
   );
 
@@ -31,16 +56,24 @@ const AlarmContext = ({children, initial}: Props) => {
     console.log('CURRENT :', current);
   }, [current]);
 
-  // useEffect(() => {
-  //   console.log('아니 왜 업데이트가 안돼지? : ', initial);
-  // }, [initial]);
-
   const updateAlarm = (updates: Partial<Alarm>) => {
     setCurrentAlarm(prev => ({...prev, ...updates}));
   };
 
+  const updateMission = (
+    newSetting: Partial<{
+      id: MissionCareType;
+      mode: MissionMode;
+    }>,
+  ) => {
+    const updateSet = current.mission
+      ? {...current.mission, ...newSetting}
+      : {...defaultMission, ...newSetting};
+    updateAlarm({mission: updateSet});
+  };
+
   return (
-    <AlarmContextManage.Provider value={{current, updateAlarm}}>
+    <AlarmContextManage.Provider value={{current, updateAlarm, updateMission}}>
       {children}
     </AlarmContextManage.Provider>
   );

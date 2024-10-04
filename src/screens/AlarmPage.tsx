@@ -1,16 +1,20 @@
-import {StyleSheet} from 'react-native';
-import React from 'react';
+import {ScrollView, SectionList, StyleSheet, View} from 'react-native';
+import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import PageHeader from '../components/PageHeader';
 import AddAlarmButton from '../components/AlarmPageComponents/AddAlarmButton';
 import AlarmList from '../components/AlarmPageComponents/AlarmList';
+import AlarmListHeader from '../components/AlarmPageComponents/AlarmListHeader';
+import {SelectList} from '../types';
 
 const AlarmPage = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <PageHeader text="알람 리스트" />
+      <PageHeader text="알람 관리" />
+      <ScrollView style={styles.content}>
+        <AlarmList />
+      </ScrollView>
       <AddAlarmButton />
-      <AlarmList />
     </SafeAreaView>
   );
 };
@@ -20,6 +24,9 @@ export default AlarmPage;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
+    marginHorizontal: 15,
+  },
+  content: {
+    flex: 1,
   },
 });

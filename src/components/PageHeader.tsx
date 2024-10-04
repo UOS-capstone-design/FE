@@ -13,7 +13,6 @@ export default PageHeader;
 
 const styles = StyleSheet.create({
   titleContainer: {
-    flex: 1,
     paddingVertical: 10,
   },
   title: {

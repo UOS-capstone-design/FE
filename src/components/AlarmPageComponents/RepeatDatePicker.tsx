@@ -130,9 +130,21 @@ const RepeatDatePicker = ({onClose}: {onClose: () => void}) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.buttonContainer}>
-        <Button title="평일" onPress={toggleHolidayButton} />
-        <Button title="주말" onPress={toggleWeekendButton} />
-        <Button title="매일" onPress={toggleEveryDayButton} />
+        <View style={styles.ButtonInviContainer}>
+          <Text style={styles.ButtonInviText} onPress={toggleHolidayButton}>
+            평일
+          </Text>
+        </View>
+        <View style={styles.ButtonInviContainer}>
+          <Text style={styles.ButtonInviText} onPress={toggleWeekendButton}>
+            주말
+          </Text>
+        </View>
+        <View style={styles.ButtonInviContainer}>
+          <Text style={styles.ButtonInviText} onPress={toggleEveryDayButton}>
+            매일
+          </Text>
+        </View>
       </View>
       {days.map(([key, label]) => (
         <View key={key} style={styles.checkboxContainer}>
@@ -146,8 +158,10 @@ const RepeatDatePicker = ({onClose}: {onClose: () => void}) => {
           <Text style={styles.label}>{label}</Text>
         </View>
       ))}
-      <View>
-        <Button onPress={onClickSaveButton} title="추가하기" />
+      <View style={styles.SaveButtonContainer}>
+        <Text style={styles.SaveButtonText} onPress={onClickSaveButton}>
+          추가하기
+        </Text>
       </View>
     </SafeAreaView>
   );
@@ -157,18 +171,17 @@ export default RepeatDatePicker;
 
 const styles = StyleSheet.create({
   container: {
-    gap: 5,
+    gap: 2,
   },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 10,
   },
   checkboxContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 5,
-    gap: 12,
+    gap: 10,
   },
   label: {
     marginLeft: 8,
@@ -178,5 +191,31 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
+    gap: 4,
+    paddingVertical: 10,
+  },
+  ButtonInviContainer: {
+    backgroundColor: 'black',
+    borderRadius: 5,
+    marginVertical: 10,
+  },
+  ButtonInviText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  SaveButtonContainer: {
+    backgroundColor: 'black',
+    borderRadius: 10,
+    marginVertical: 10,
+  },
+  SaveButtonText: {
+    textAlign: 'center',
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 18,
+    padding: 15,
   },
 });

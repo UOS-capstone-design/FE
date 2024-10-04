@@ -1,16 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Switch,
-  TouchableOpacity,
-  Platform,
-  ActionSheetIOS,
-} from 'react-native';
+import {StyleSheet, Text, View, Switch, TouchableOpacity} from 'react-native';
 import {useCurrentAlarm} from '../../hooks/useCurrentAlarm.ts';
 import Slider from '@react-native-community/slider';
-import {Picker} from '@react-native-picker/picker';
 import {SettingTimeInterval} from '../../types';
 import Modal_CU_Setting_Interval from './Modal_CU_Setting_Interval';
 
@@ -22,20 +13,6 @@ const Modal_CU_Setting = () => {
   const [isVisibleSettingIntervalModal, setIsVisibleSettingIntervalModal] =
     useState<boolean>(false);
 
-  // const updateSettings = (
-  //   newSettings: Partial<{
-  //     isVibration: boolean;
-  //     volume: number;
-  //     interval: SettingTimeInterval;
-  //   }>,
-  // ) => {
-  //   const updatedSettings = {
-
-  //     ...newSettings,
-  //   };
-  //   updateAlarm({setting: updatedSettings});
-  // };
-
   const updateSettings = useCallback(
     (
       newSettings: Partial<{
@@ -45,9 +22,7 @@ const Modal_CU_Setting = () => {
       }>,
     ) => {
       const updatedSettings = {
-        isVibration,
-        volume,
-        interval,
+        ...current.setting,
         ...newSettings,
       };
       updateAlarm({setting: updatedSettings});
@@ -61,14 +36,13 @@ const Modal_CU_Setting = () => {
       <View style={styles.settingItem}>
         <Text style={styles.settingLabel}>진동 사용</Text>
         <Switch
-          value={current.setting.isVibration}
+          value={current.setting.isVibration || isVibration}
           onValueChange={value => {
             setIsVibration(value);
             updateSettings({isVibration: value});
           }}
         />
       </View>
-
       <View style={styles.settingItem}>
         <Text style={styles.settingLabel}>알람 볼륨</Text>
         <View style={styles.sliderContainer}>
@@ -76,7 +50,7 @@ const Modal_CU_Setting = () => {
             style={styles.slider}
             minimumValue={0}
             maximumValue={100}
-            value={current.setting.volume}
+            value={current.setting.volume || volume}
             onValueChange={value => {
               setVolume(value);
               updateSettings({volume: value});
@@ -91,7 +65,7 @@ const Modal_CU_Setting = () => {
         <Text style={styles.settingLabel}>반복 간격</Text>
         <TouchableOpacity
           onPress={() => setIsVisibleSettingIntervalModal(true)}>
-          <Text>{current.setting.interval}</Text>
+          <Text>{current.setting.interval || interval}</Text>
         </TouchableOpacity>
       </View>
       <Modal_CU_Setting_Interval
@@ -108,20 +82,19 @@ const Modal_CU_Setting = () => {
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 20,
-    borderBottomColor: 'gray',
-    borderBottomWidth: 0.5,
+    gap: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E0E0E0',
   },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 20,
     color: 'black',
   },
   settingItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
   },
   settingLabel: {
     fontSize: 16,

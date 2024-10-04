@@ -1,15 +1,15 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
-import Modal_Repeat_Alarm from './Modal_Repeat_Alarm';
+import Modal_Repeat_Alarm from './Modal_Repeat_Alarm.tsx';
 import {useCurrentAlarm} from '../../hooks/useCurrentAlarm.ts';
-import {RepeatState} from '../../types';
+import {RepeatState} from '../../types.ts';
 import Entypo from 'react-native-vector-icons/Entypo';
 
 interface LabelItem {
   [key: string]: string;
 }
 
-function ViewCurrentSelectedRepeatDays(repeat?: RepeatState) {
+export function ViewCurrentSelectedRepeatDays(repeat: RepeatState) {
   const label: LabelItem[] = [
     {once: '반복 없음'},
     {mon: '월'},
@@ -20,10 +20,6 @@ function ViewCurrentSelectedRepeatDays(repeat?: RepeatState) {
     {sat: '토'},
     {sun: '일'},
   ];
-
-  if (!repeat) {
-    return '선택';
-  }
 
   const ChangeForm = Object.entries(repeat)
     .filter(([_, value]) => value === true)
@@ -51,7 +47,7 @@ function ViewCurrentSelectedRepeatDays(repeat?: RepeatState) {
     : ChangeForm.join(', ');
 }
 
-const RepeatPicker = () => {
+const Modal_CU_RepeatPicker = () => {
   const [isVisibleModal, setIsVisibleModal] = useState<boolean>(false);
   const {current} = useCurrentAlarm();
 
@@ -79,7 +75,7 @@ const RepeatPicker = () => {
   );
 };
 
-export default RepeatPicker;
+export default Modal_CU_RepeatPicker;
 
 const styles = StyleSheet.create({
   repeatContainer: {
@@ -87,8 +83,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 20,
-    borderBottomColor: 'gray',
-    borderBottomWidth: 0.5,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E0E0E0',
   },
   title: {
     fontSize: 18,

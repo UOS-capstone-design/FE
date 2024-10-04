@@ -4,6 +4,7 @@ import {useRecoilValue} from 'recoil';
 import {allAlarmsSelector} from '../../atoms';
 import {Alarm} from '../../types';
 import Modal_CU_Alarm from './Modal_CU_Alarm';
+import AlarmItem from './AlarmItem';
 
 const AlarmList = () => {
   const alarms = useRecoilValue(allAlarmsSelector);
@@ -16,12 +17,19 @@ const AlarmList = () => {
   };
 
   return (
-    <View>
-      {alarms.map((alarm: Alarm) => (
-        <View key={alarm.id}>
-          <Text onPress={() => onClickItem(alarm)}>{alarm.id}</Text>
-        </View>
-      ))}
+    <View style={styles.AlarmListContainer}>
+      {alarms.map((alarm: Alarm) => {
+        if (alarm && alarm.timer && alarm.timer instanceof Date) {
+          return (
+            <AlarmItem
+              key={alarm.id}
+              onPress={() => onClickItem(alarm)}
+              alarm={alarm}
+            />
+          );
+        }
+        return null;
+      })}
       <Modal_CU_Alarm
         isVisibleModal={isVisibleModal}
         closeModal={() => setIsVisibleModal(false)}
@@ -33,4 +41,8 @@ const AlarmList = () => {
 
 export default AlarmList;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  AlarmListContainer: {
+    gap: 10,
+  },
+});

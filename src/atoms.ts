@@ -1,5 +1,5 @@
 import {atom, DefaultValue, selector} from 'recoil';
-import {Alarm} from './types';
+import {Alarm, Report, ReportDuration} from './types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const STORAGE_KEY = 'alarms';
@@ -52,3 +52,15 @@ export const loadAlarms = async () => {
   }
   return [] as Alarm[];
 };
+
+export const currentReportState = atom<Report>({
+  key: 'currentReportState',
+  default: {mission: undefined, duration: 'Today'},
+});
+
+export const currentReportSelector = selector({
+  key: 'currentReportSelector',
+  get: ({get}) => get(currentReportState),
+  set: ({set}, newValue: Report | DefaultValue) =>
+    set(currentReportState, newValue),
+});

@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   modalContentContainer: {
-    paddingVertical: 20,
     alignContent: 'center',
     flexDirection: 'column',
     flex: 1,

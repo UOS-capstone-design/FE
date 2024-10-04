@@ -2,7 +2,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {allAlarmsSelector, STORAGE_KEY} from '../atoms';
 import {Alarm} from '../types';
 import {useRecoilState} from 'recoil';
-import {useMemo} from 'react';
 
 export const useAlarmManager = () => {
   const [alarms, setAlarms] = useRecoilState(allAlarmsSelector);
