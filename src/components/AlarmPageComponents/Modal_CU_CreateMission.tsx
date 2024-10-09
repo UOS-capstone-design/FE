@@ -19,9 +19,6 @@ const Modal_CU_CreateMission = () => {
     }
   };
 
-  useEffect(() => {
-    console.log('Modal_CU_CreateMission에서 Current 변화 확인 : ', current);
-  }, [current]);
   return (
     <View style={styles.Container}>
       <View style={styles.HeaderContainer}>

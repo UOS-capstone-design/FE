@@ -48,13 +48,11 @@ const AlarmContext = ({children, initial}: Props) => {
           active: false,
           repeat: defaultRepeat,
           mission: defaultMission,
+          delay: false,
+          delayTimes: 0,
           setting: {isVibration: false, volume: 50, interval: '반복 없음'},
         },
   );
-
-  useEffect(() => {
-    console.log('CURRENT :', current);
-  }, [current]);
 
   const updateAlarm = (updates: Partial<Alarm>) => {
     setCurrentAlarm(prev => ({...prev, ...updates}));

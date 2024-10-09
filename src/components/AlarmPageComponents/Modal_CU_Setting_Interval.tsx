@@ -31,7 +31,7 @@ const Modal_CU_Setting_Interval = ({
   currentInterval,
   updateSettings,
 }: Props) => {
-  const intervals: SettingTimeInterval[] = ['반복 없음', 5, 10, 15, 30];
+  const intervals: SettingTimeInterval[] = ['반복 없음', 1, 10, 15, 30];
   const onClickSaveButton = () => {
     updateSettings({interval: currentInterval});
     onCloseModal();

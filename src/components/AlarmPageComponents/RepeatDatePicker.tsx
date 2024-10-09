@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: 4,
+    gap: 5,
     paddingVertical: 10,
   },
   ButtonInviContainer: {

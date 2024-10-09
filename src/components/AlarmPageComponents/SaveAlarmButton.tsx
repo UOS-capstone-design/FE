@@ -40,7 +40,7 @@ const SaveAlarmButton = ({id, closeModal}: Props) => {
     }
 
     if (id) {
-      alarmManager.updateAlarm(current);
+      alarmManager.updateAlarm({alarm: current});
     } else {
       const updatedAlarm = {...current, active: true};
       alarmManager.saveAlarm(updatedAlarm);

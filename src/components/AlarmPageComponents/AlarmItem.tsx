@@ -13,6 +13,7 @@ import {Alarm} from '../../types';
 import {ViewCurrentSelectedRepeatDays} from './Modal_CU_RepeatPicker';
 import {useHandleAlldAlarm} from '../../hooks/useHandleAllAlarm';
 import {GetCareMissionDataWithId} from '../../data/DefaultDataSet';
+import {useAlarmManager} from '../../hooks/useAlarmManager';
 
 type Props = {
   alarm: Alarm;
@@ -22,7 +23,7 @@ type Props = {
 const AlarmItem = ({alarm, onPress}: Props) => {
   const [expanded, setExpanded] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const {updateTargetAlarm} = useHandleAlldAlarm();
+  const alarmManager = useAlarmManager();
 
   const hour = alarm?.timer.getHours();
   const viewHour = hour >= 12 ? hour - 12 : hour;
@@ -69,7 +70,9 @@ const AlarmItem = ({alarm, onPress}: Props) => {
           <Switch
             value={alarm.active}
             onChange={() => {
-              updateTargetAlarm({alarm, updates: {active: !alarm.active}});
+              alarmManager.updateAlarm({
+                alarm: {...alarm, active: !alarm.active},
+              });
             }}
             trackColor={{false: '#767577', true: '#81b0ff'}}
             thumbColor={alarm.active ? '#f5dd4b' : '#f4f3f4'}

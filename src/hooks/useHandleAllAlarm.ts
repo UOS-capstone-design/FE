@@ -1,14 +1,8 @@
-import {useRecoilState} from 'recoil';
+import {useRecoilState, useRecoilValue} from 'recoil';
 import {allAlarmsSelector} from '../atoms';
-import {Alarm} from '../types';
-import {useEffect} from 'react';
 
 export const useHandleAlldAlarm = () => {
-  const [allAlarms, setAllAlarms] = useRecoilState(allAlarmsSelector);
-
-  useEffect(() => {
-    console.log('ALL ALARMS : ', allAlarms);
-  }, [allAlarms]);
+  const allAlarms = useRecoilValue(allAlarmsSelector);
 
   const findAlarmUsingId = (id: string) => {
     const find = allAlarms.find(a => a.id === id);
@@ -16,20 +10,10 @@ export const useHandleAlldAlarm = () => {
     else console.log('NO ITEM');
   };
 
-  const updateTargetAlarm = ({
-    alarm,
-    updates,
-  }: {
-    alarm: Alarm;
-    updates: Partial<Alarm>;
-  }) => {
-    setAllAlarms(prev =>
-      prev.map(item => (item.id === alarm.id ? {...alarm, ...updates} : item)),
-    );
-  };
+  const findAlarmDelayFromAll = allAlarms.filter(alarm => alarm.delay);
 
   return {
     findAlarmUsingId,
-    updateTargetAlarm,
+    findAlarmDelayFromAll,
   };
 };
