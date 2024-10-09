@@ -1,12 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Button,
-  Platform,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Platform, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {useCurrentAlarm} from '../hooks/useCurrentAlarm';
 
@@ -19,10 +12,6 @@ const TimePicker = () => {
     setShow(Platform.OS === 'ios');
     updateAlarm({timer: currentDate});
   };
-
-  useEffect(() => {
-    console.log('CURRENT : ', current);
-  }, [current]);
 
   const showTimepicker = () => {
     setShow(true);
@@ -41,6 +30,9 @@ const TimePicker = () => {
         />
       ) : (
         <View>
+          <View>
+            <Text>시간 포맷 설정</Text>
+          </View>
           <TouchableOpacity style={styles.AndroidSelectTimeButtonContainer}>
             <Text style={styles.AndroidSelectTimeText} onPress={showTimepicker}>
               시간 선택

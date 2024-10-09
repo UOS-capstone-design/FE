@@ -1,4 +1,4 @@
-import {MissionCareType} from '../types';
+import {MissionCareType, StepKey} from '../types';
 import {EatFoodImg, ManageBloodSugar, EatMedicianImg} from '../../asset/images';
 
 export const CareMissionData = [
