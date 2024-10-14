@@ -1,5 +1,6 @@
 import {
   Animated,
+  ScrollView,
   StyleSheet,
   Text,
   Touchable,
@@ -31,7 +32,7 @@ const DelayedMissionList = () => {
   });
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <TouchableOpacity onPress={toggleExpand} style={styles.headerContainer}>
         <Text style={styles.headerText}>미션을 수행해주세요</Text>
         <Entypo name={isExpanded ? 'chevron-up' : 'chevron-down'} size={24} />
@@ -42,7 +43,7 @@ const DelayedMissionList = () => {
             <DelayedMissionItem key={alarm.id} delayedAlarm={alarm} />
           ))}
       </Animated.View>
-    </View>
+    </ScrollView>
   );
 };
 

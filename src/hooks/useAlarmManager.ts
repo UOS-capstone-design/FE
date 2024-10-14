@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {allAlarmsSelector, STORAGE_KEY} from '../atoms';
+import {allAlarmsSelector, STORAGE_ALARM_KEY} from '../atoms';
 import {Alarm} from '../types';
 import {useRecoilState} from 'recoil';
 import AndroidAlarmModule from '../util/AndroidAlarmManager';
@@ -11,7 +11,7 @@ export const useAlarmManager = () => {
   const loadAlarms = async () => {
     try {
       AsyncStorage.clear();
-      const savedAlarms = await AsyncStorage.getItem(STORAGE_KEY);
+      const savedAlarms = await AsyncStorage.getItem(STORAGE_ALARM_KEY);
       if (savedAlarms) {
         setAlarms(JSON.parse(savedAlarms) as Alarm[]);
       } else {
@@ -32,7 +32,10 @@ export const useAlarmManager = () => {
         'null',
       );
       const updatedAlarms = [...alarms, alarm];
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updatedAlarms));
+      await AsyncStorage.setItem(
+        STORAGE_ALARM_KEY,
+        JSON.stringify(updatedAlarms),
+      );
       setAlarms(updatedAlarms);
       console.log('Alarm saved successfully:', alarm);
       //TODO : 백엔드 저장 로직 필요
@@ -64,7 +67,10 @@ export const useAlarmManager = () => {
         'null',
       );
       const updatedAlarms = alarms.map(a => (a.id === alarm.id ? alarm : a));
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updatedAlarms));
+      await AsyncStorage.setItem(
+        STORAGE_ALARM_KEY,
+        JSON.stringify(updatedAlarms),
+      );
       setAlarms(updatedAlarms);
       console.log('Alarm updated successfully:', alarm);
       //TODO : 백엔드 업데이트 로직 필요
@@ -76,7 +82,10 @@ export const useAlarmManager = () => {
   const deleteAlarm = async (alarmId: string) => {
     try {
       const updatedAlarms = alarms.filter(alarm => alarm.id !== alarmId);
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updatedAlarms));
+      await AsyncStorage.setItem(
+        STORAGE_ALARM_KEY,
+        JSON.stringify(updatedAlarms),
+      );
       setAlarms(updatedAlarms);
       console.log('Alarm deleted successfully:', alarmId);
       // 백엔드 삭제 로직 추가

@@ -4,7 +4,7 @@ import uuid from 'react-native-uuid';
 
 type Props = {
   children: ReactNode;
-  initial?: Alarm;
+  initial: Alarm | undefined;
 };
 
 interface AlarmContextType {
@@ -38,21 +38,19 @@ const defaultMission = {
   id: undefined,
 };
 
+const defaultAlarm: Alarm = {
+  id: uuid.v4().toString(),
+  timer: new Date(),
+  active: false,
+  repeat: defaultRepeat,
+  mission: defaultMission,
+  delay: false,
+  delayTimes: 0,
+  setting: {isVibration: false, volume: 50, interval: '반복 없음'},
+};
+
 const AlarmContext = ({children, initial}: Props) => {
-  const [current, setCurrentAlarm] = useState<Alarm>(
-    initial
-      ? {...initial}
-      : {
-          id: uuid.v4().toString(),
-          timer: new Date(),
-          active: false,
-          repeat: defaultRepeat,
-          mission: defaultMission,
-          delay: false,
-          delayTimes: 0,
-          setting: {isVibration: false, volume: 50, interval: '반복 없음'},
-        },
-  );
+  const [current, setCurrentAlarm] = useState<Alarm>(initial || defaultAlarm);
 
   const updateAlarm = (updates: Partial<Alarm>) => {
     setCurrentAlarm(prev => ({...prev, ...updates}));

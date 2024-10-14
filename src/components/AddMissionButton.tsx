@@ -6,6 +6,7 @@ type Props = {
   onPressButton: () => void;
 };
 
+// This Component is using in AlarmAddModal and ReportPage to Add Mission
 const AddMissionButton = ({onPressButton}: Props) => {
   return (
     <TouchableOpacity

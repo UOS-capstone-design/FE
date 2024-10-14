@@ -1,8 +1,9 @@
 import {atom, DefaultValue, selector} from 'recoil';
-import {Alarm, Report, ReportDuration} from './types';
+import {Alarm, Report, ReportDuration, Todo, User} from './types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const STORAGE_KEY = 'alarms';
+export const STORAGE_ALARM_KEY = 'alarms';
+export const STORAGE_TODO_KEY = 'todos';
 
 export const allAlarmsState = atom<Alarm[]>({
   key: 'allAlarmsState',
@@ -12,7 +13,7 @@ export const allAlarmsState = atom<Alarm[]>({
       // Load initial value from AsyncStorage
       const loadInitialValue = async () => {
         try {
-          const savedValue = await AsyncStorage.getItem(STORAGE_KEY);
+          const savedValue = await AsyncStorage.getItem(STORAGE_ALARM_KEY);
           if (savedValue != null) {
             setSelf(JSON.parse(savedValue));
           }
@@ -24,7 +25,7 @@ export const allAlarmsState = atom<Alarm[]>({
       loadInitialValue();
 
       onSet((newValue, _) => {
-        AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(newValue)).catch(
+        AsyncStorage.setItem(STORAGE_ALARM_KEY, JSON.stringify(newValue)).catch(
           error => console.error('Error saving alarms:', error),
         );
       });
@@ -43,7 +44,7 @@ export const allAlarmsSelector = selector({
 export const loadAlarms = async () => {
   try {
     await AsyncStorage.clear();
-    const savedAlarms = await AsyncStorage.getItem(STORAGE_KEY);
+    const savedAlarms = await AsyncStorage.getItem(STORAGE_ALARM_KEY);
     if (savedAlarms !== null) {
       return JSON.parse(savedAlarms) as Alarm[];
     }
@@ -63,4 +64,43 @@ export const currentReportSelector = selector({
   get: ({get}) => get(currentReportState),
   set: ({set}, newValue: Report | DefaultValue) =>
     set(currentReportState, newValue),
+});
+
+export const userState = atom<User | null>({
+  key: 'userState',
+  default: null,
+});
+
+export const allTodoState = atom<Todo[]>({
+  key: 'allTodoState',
+  default: [],
+  effects: [
+    ({setSelf, onSet}) => {
+      const loadInitialValue = async () => {
+        try {
+          const savedValue = await AsyncStorage.getItem(STORAGE_TODO_KEY);
+          if (savedValue != null) {
+            setSelf(JSON.parse(savedValue));
+          }
+        } catch (error) {
+          console.error('Error loading alarms:', error);
+        }
+      };
+
+      loadInitialValue();
+
+      onSet((newValue, _) => {
+        AsyncStorage.setItem(STORAGE_TODO_KEY, JSON.stringify(newValue)).catch(
+          error => console.error('Error saving alarms:', error),
+        );
+      });
+    },
+  ],
+});
+
+export const allTodoSelector = selector({
+  key: 'allTodoSelector',
+  get: ({get}) => get(allTodoState),
+  set: ({set}, newValue: DefaultValue | Todo[] | []) =>
+    set(allTodoState, newValue),
 });

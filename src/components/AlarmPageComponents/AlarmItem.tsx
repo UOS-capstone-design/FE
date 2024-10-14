@@ -14,6 +14,7 @@ import {ViewCurrentSelectedRepeatDays} from './Modal_CU_RepeatPicker';
 import {useHandleAlldAlarm} from '../../hooks/useHandleAllAlarm';
 import {GetCareMissionDataWithId} from '../../data/DefaultDataSet';
 import {useAlarmManager} from '../../hooks/useAlarmManager';
+import {TimeFormatting} from '../../util/TimeFormatting';
 
 type Props = {
   alarm: Alarm;
@@ -24,14 +25,7 @@ const AlarmItem = ({alarm, onPress}: Props) => {
   const [expanded, setExpanded] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const alarmManager = useAlarmManager();
-
-  const hour = alarm?.timer.getHours();
-  const viewHour = hour >= 12 ? hour - 12 : hour;
-  const minute = alarm?.timer.getMinutes();
-  const ampm = hour >= 12 ? '오후' : '오전';
-  const viewTime = `${String(viewHour).padStart(2, '0')}:${String(
-    minute,
-  ).padStart(2, '0')}`;
+  const {ampm, viewTime} = TimeFormatting(alarm.timer);
   const mission = GetCareMissionDataWithId(alarm.mission.id);
 
   if (!mission) {

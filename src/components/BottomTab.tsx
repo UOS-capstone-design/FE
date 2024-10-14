@@ -1,11 +1,11 @@
 import React, {ReactNode} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import AlarmPage from '../screens/AlarmPage';
-import MonitoringPage from '../screens/MonitoringPage';
 import ReportPage from '../screens/ReportPage';
 import ProfilePage from '../screens/ProfilePage';
 import Ionic from 'react-native-vector-icons/Ionicons';
 import {Dimensions, Platform, StyleSheet} from 'react-native';
+import AllyojoPage from '../screens/AllyojoPage';
 
 const getTabBarIcon = (
   route: string,
@@ -53,7 +53,7 @@ export default function BottomTab(): ReactNode {
         },
       })}>
       <Tab.Screen name="알람" component={AlarmPage} />
-      <Tab.Screen name="알려줘" component={MonitoringPage} />
+      <Tab.Screen name="알려줘" component={AllyojoPage} />
       <Tab.Screen name="리포트" component={ReportPage} />
       <Tab.Screen name="내정보" component={ProfilePage} />
     </Tab.Navigator>

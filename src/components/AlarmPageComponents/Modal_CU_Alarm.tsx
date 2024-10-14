@@ -9,6 +9,7 @@ import Modal_CU_Setting from './Modal_CU_Setting';
 import RepeatPicker from './Modal_CU_RepeatPicker';
 import AlarmContext from './AlarmContext';
 import SaveAlarmButton from './SaveAlarmButton';
+import Modal_CU_Content from './Modal_CU_Content';
 
 type Props = {
   closeModal: () => void;
@@ -25,13 +26,10 @@ const Modal_CU_Alarm = ({closeModal, isVisibleModal, alarm}: Props) => {
       transparent={false}>
       <SafeAreaProvider>
         <SafeAreaView style={styles.modalContainer}>
-          <AlarmContext initial={alarm}>
+          <AlarmContext initial={alarm || undefined}>
             <Modal_CU_Header closeModal={closeModal} alarm={alarm} />
             <ScrollView>
-              <TimePicker />
-              <RepeatPicker />
-              <Modal_CU_CreateMission />
-              <Modal_CU_Setting />
+              <Modal_CU_Content />
               <SaveAlarmButton id={alarm?.id} closeModal={closeModal} />
             </ScrollView>
           </AlarmContext>

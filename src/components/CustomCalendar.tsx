@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 import {MarkedDates} from 'react-native-calendars/src/types';
+import {useCurrentTodo} from '../hooks/useCurrentTodo';
 
 LocaleConfig.locales['fr'] = {
   monthNames: [
@@ -32,8 +33,8 @@ LocaleConfig.locales['fr'] = {
     '11월',
     '12월',
   ],
-  dayNames: ['월', '화', '수', '목', '금', '토', '일'],
-  dayNamesShort: ['월', '화', '수', '목', '금', '토', '일'],
+  dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+  dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
   today: '오늘',
 };
 LocaleConfig.defaultLocale = 'fr';
@@ -47,12 +48,15 @@ type Props = {
   isPeriod: boolean;
 };
 
+// isPeriod가 false면 Todo모달에서 호출되었음을 의미 -> useCurrentTodo 훅을 이용해서 날짜 데이터 저장 가능
 const CustomCalendar = ({isPeriod}: Props) => {
   const [selectedPeriod, setSelectedPeriod] = useState<Period>({
     recentPick: '',
     lastPick: '',
   });
   const [markedDates, setMarkedDates] = useState<MarkedDates>({});
+
+  const updateTodo = !isPeriod ? useCurrentTodo().updateTodo : null;
 
   const date = new Date();
   const minDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
@@ -111,6 +115,9 @@ const CustomCalendar = ({isPeriod}: Props) => {
       }
     }
     setMarkedDates(markedDatesObj);
+    if (updateTodo) {
+      updateTodo({day: selectedPeriod.recentPick});
+    }
   }, [selectedPeriod]);
 
   useEffect(() => {
@@ -122,9 +129,9 @@ const CustomCalendar = ({isPeriod}: Props) => {
       <Calendar
         theme={{
           'stylesheet.calendar.header': {
-            dayTextAtIndex5: {color: 'blue'},
-            dayTextAtIndex6: {color: 'red'},
-            dayTextAtIndex0: {color: 'black'},
+            dayTextAtIndex5: {color: 'black'},
+            dayTextAtIndex6: {color: 'blue'},
+            dayTextAtIndex0: {color: 'red'},
             dayTextAtIndex1: {color: 'black'},
             dayTextAtIndex2: {color: 'black'},
             dayTextAtIndex3: {color: 'black'},

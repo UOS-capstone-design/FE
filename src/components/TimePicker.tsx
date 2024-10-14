@@ -1,16 +1,28 @@
 import React, {useEffect, useState} from 'react';
 import {View, Platform, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {useCurrentAlarm} from '../hooks/useCurrentAlarm';
+import {Alarm, Todo} from '../types';
+import {TimeFormatting} from '../util/TimeFormatting';
 
-const TimePicker = () => {
+type Props = {
+  current: Alarm | Todo;
+  updateAlarm?: (updates: Partial<Alarm>) => void;
+  updateTodo?: (updates: Partial<Todo>) => void;
+};
+
+const TimePicker = ({current, updateAlarm, updateTodo}: Props) => {
   const [show, setShow] = useState(false);
-  const {current, updateAlarm} = useCurrentAlarm();
+  const {ampm, viewTime} = TimeFormatting(current.timer);
 
+  console.log('current : ', current);
   const onChangeInternal = (event: any, selectedDate?: Date) => {
     const currentDate = selectedDate || current.timer;
     setShow(Platform.OS === 'ios');
-    updateAlarm({timer: currentDate});
+    updateAlarm
+      ? updateAlarm({timer: currentDate})
+      : updateTodo
+      ? updateTodo({timer: currentDate})
+      : console.log('updateAlarm, updateTodo 함수 모두 전달되지 않았습니다');
   };
 
   const showTimepicker = () => {
@@ -30,8 +42,9 @@ const TimePicker = () => {
         />
       ) : (
         <View>
-          <View>
-            <Text>시간 포맷 설정</Text>
+          <View style={styles.timeContainer}>
+            <Text style={styles.ampm}>{ampm}</Text>
+            <Text style={styles.viewTime}>{viewTime}</Text>
           </View>
           <TouchableOpacity style={styles.AndroidSelectTimeButtonContainer}>
             <Text style={styles.AndroidSelectTimeText} onPress={showTimepicker}>
@@ -61,7 +74,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#007AFF', // iOS 블루 색상 사용
     padding: 15,
     borderRadius: 10,
-    marginVertical: 20,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
@@ -78,5 +90,22 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: 'white',
     fontWeight: 'bold',
+  },
+  timeContainer: {
+    flexDirection: 'row',
+    paddingVertical: 20,
+    gap: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  ampm: {
+    fontWeight: 'semibold',
+    fontSize: 20,
+    color: 'black',
+  },
+  viewTime: {
+    fontWeight: 'bold',
+    fontSize: 28,
+    color: 'black',
   },
 });
